@@ -69,9 +69,10 @@
         .changelog-item{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--text2)}
         .changelog-date{color:var(--text3);white-space:nowrap;min-width:70px}
         .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 24px 80px 24px;transition:.3s;position:relative;cursor:pointer}
+        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.3s;position:relative;cursor:pointer;display:flex;flex-direction:column}
         .tool-card:hover{transform:translateY(-4px);border-color:var(--accent2);box-shadow:0 10px 30px rgba(0,0,0,.15)}
-        .tool-card .card-bottom{position:absolute;bottom:24px;left:24px;right:24px}
+        .tool-card .card-body{flex:1}
+        .tool-card .card-bottom{margin-top:12px;flex-shrink:0}
         .new-badge{position:absolute;top:10px;right:10px;padding:3px 8px;background:var(--red);color:#fff;border-radius:8px;font-size:.65rem;font-weight:700;animation:pulse 2s infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
         .tool-compare{width:16px;height:16px;accent-color:#3b82f6;cursor:pointer;margin-right:8px;flex-shrink:0;opacity:.4;transition:opacity .2s;position:relative;z-index:1}
@@ -156,7 +157,7 @@
         footer a{color:var(--accent2);text-decoration:none}
         @media(max-width:640px){
             h1{font-size:1.6rem}.tools-grid{grid-template-columns:1fr}.search-input{max-width:100%;font-size:16px}
-            .featured-card{min-width:220px}.tool-card{padding:18px 18px 80px 18px}
+            .featured-card{min-width:220px}.tool-card{padding:18px}
             .visit-btn{padding:12px 20px;font-size:.9rem;width:100%;text-align:center}
             .share-btn{width:100%}.tag-btn{padding:7px 14px;font-size:12px}.scenario-tag{padding:5px 10px;font-size:11px}
             .modal{padding:24px 18px}.modal input,.modal select,.modal textarea{padding:14px;font-size:16px}
@@ -395,7 +396,7 @@ function rt(){
     document.getElementById('featuredSection').style.display=(cc==='all'&&cs==='allS'&&cSearch===''&&cSort==='default')?'block':'none';
     // Update URL
     var url=new URL(window.location);if(cc!=='all')url.searchParams.set('cat',cc);else url.searchParams.delete('cat');window.history.replaceState({},'',url);
-    updateCompareBar();
+    updateCompareBar();requestAnimationFrame(function(){requestAnimationFrame(matchCardHeights);});
 }
 
 document.getElementById('tagsContainer').addEventListener('click',function(e){if(e.target.classList.contains('tag-btn')){document.querySelectorAll('.tag-btn').forEach(function(b){b.classList.remove('active');});e.target.classList.add('active');cc=e.target.dataset.category;rt();}});
@@ -461,7 +462,9 @@ function tc(name){ak.clicks[name]=(ak.clicks[name]||0)+1;localStorage.setItem('a
 function ran(){var entries=[];for(var k in ak.clicks)entries.push({name:k,count:ak.clicks[k]});entries.sort(function(a,b){return b.count-a.count;});var top5=entries.slice(0,5);document.getElementById('hotList').innerHTML=top5.length===0?'<div class="hot-item" style="color:var(--text4)">还没有点击数据</div>':top5.map(function(e,i){var rc=i===0?'r1':i===1?'r2':i===2?'r3':'rn',tool=null;for(var j=0;j<tools.length;j++){if(tools[j].name===e.name){tool=tools[j];break;}}var cat=tool?tool.cat:'';return '<div class="hot-item"><span class="hot-rank '+rc+'">'+(i+1)+'</span><span class="hot-name">'+e.name+'</span><span class="hot-cat">'+cat+'</span><span class="hot-count">'+e.count+' 次点击</span></div>';}).join('');document.getElementById('analyticsStats').textContent='📈 总访问：'+ak.views+' 次 | 数据存于浏览器本地';}
 document.getElementById('toolsGrid').addEventListener('click',function(e){var btn=e.target.closest('.visit-btn');if(btn){var card=btn.closest('.tool-card');if(card){var ne=card.querySelector('.tool-name');if(ne)tc(ne.textContent);}}});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.getElementById('modalOverlay').classList.remove('show');document.getElementById('compareOverlay').classList.remove('show');document.getElementById('detailOverlay').classList.remove('show');}if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();document.getElementById('searchInput').focus();}});
+function matchCardHeights(){var cards=document.querySelectorAll('.tool-card');if(cards.length<2)return;cards.forEach(function(c){c.style.height='';});var rows=[],lastTop=-999;cards.forEach(function(c){var t=c.getBoundingClientRect().top;if(Math.abs(t-lastTop)>3){rows.push([]);lastTop=t;}rows[rows.length-1].push(c);});rows.forEach(function(r){if(r.length<2)return;var mh=0;r.forEach(function(c){var h=c.getBoundingClientRect().height;if(h>mh)mh=h;});r.forEach(function(c){c.style.height=mh+'px';});});}
 window.addEventListener('scroll',function(){var b=document.getElementById('backToTop');if(window.scrollY>500)b.classList.add('show');else b.classList.remove('show');});
+var rh;window.addEventListener('resize',function(){clearTimeout(rh);rh=setTimeout(function(){var cs=document.querySelectorAll('.tool-card');cs.forEach(function(c){c.style.height='';});requestAnimationFrame(function(){requestAnimationFrame(matchCardHeights);});},150);});
 ran();init();
 </script>
 </body>
