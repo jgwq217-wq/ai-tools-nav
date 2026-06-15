@@ -69,10 +69,10 @@
         .changelog-item{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--text2)}
         .changelog-date{color:var(--text3);white-space:nowrap;min-width:70px}
         .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.3s;position:relative;cursor:pointer;display:grid;grid-template-rows:1fr auto}
+        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.3s;position:relative;cursor:pointer;display:flex;flex-direction:column}
         .tool-card:hover{transform:translateY(-4px);border-color:var(--accent2);box-shadow:0 10px 30px rgba(0,0,0,.15)}
-        .tool-card .card-body{min-width:0}
-        .tool-card .card-bottom{padding-top:12px}
+        .tool-card .card-body{flex:1;min-width:0}
+        .tool-card .card-bottom{padding-top:14px;flex-shrink:0}
         .new-badge{position:absolute;top:10px;right:10px;padding:3px 8px;background:var(--red);color:#fff;border-radius:8px;font-size:.65rem;font-weight:700;animation:pulse 2s infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
         .tool-compare{width:16px;height:16px;accent-color:#3b82f6;cursor:pointer;margin-right:8px;flex-shrink:0;opacity:.4;transition:opacity .2s;position:relative;z-index:1}
