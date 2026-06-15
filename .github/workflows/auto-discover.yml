@@ -34,6 +34,4 @@ jobs:
         run: |
           gh issue create \
             --title "🆕 本周新发现的 AI 工具 ($(date +%m/%d))" \
-            --body "$(cat scripts/_new_tools.md)" \
-            --label "auto-discover" \
-            --label "待审核"
+            --body "$(cat scripts/_new_tools.md)"
