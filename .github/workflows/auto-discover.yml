@@ -1,0 +1,39 @@
+name: 🤖 每周 AI 工具发现
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'  # 每周一 9:00 北京时间 (UTC+8)
+  workflow_dispatch:       # 手动触发
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装依赖
+        run: pip install requests
+
+      - name: 搜索新 AI 工具
+        env:
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+        run: python scripts/discover.py
+
+      - name: 创建 Issue
+        if: hashFiles('scripts/_new_tools.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "🆕 本周新发现的 AI 工具 ($(date +%m/%d))" \
+            --body "$(cat scripts/_new_tools.md)" \
+            --label "auto-discover" \
+            --label "待审核"
