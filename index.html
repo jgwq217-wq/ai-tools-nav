@@ -69,7 +69,7 @@
         .changelog-item{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--text2)}
         .changelog-date{color:var(--text3);white-space:nowrap;min-width:70px}
         .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.3s;position:relative;cursor:pointer;display:flex;flex-direction:column}
+        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.3s;position:relative;cursor:pointer;display:flex;flex-direction:column;height:100%}
         .tool-card:hover{transform:translateY(-4px);border-color:var(--accent2);box-shadow:0 10px 30px rgba(0,0,0,.15)}
         .tool-card .card-bottom{margin-top:auto;padding-top:12px}
         .new-badge{position:absolute;top:10px;right:10px;padding:3px 8px;background:var(--red);color:#fff;border-radius:8px;font-size:.65rem;font-weight:700;animation:pulse 2s infinite}
@@ -156,7 +156,7 @@
         footer a{color:var(--accent2);text-decoration:none}
         @media(max-width:640px){
             h1{font-size:1.6rem}.tools-grid{grid-template-columns:1fr}.search-input{max-width:100%;font-size:16px}
-            .featured-card{min-width:220px}.tool-card{padding:18px}
+            .featured-card{min-width:220px}.tool-card{padding:18px;height:auto}
             .visit-btn{padding:12px 20px;font-size:.9rem;width:100%;text-align:center}
             .share-btn{width:100%}.tag-btn{padding:7px 14px;font-size:12px}.scenario-tag{padding:5px 10px;font-size:11px}
             .modal{padding:24px 18px}.modal input,.modal select,.modal textarea{padding:14px;font-size:16px}
