@@ -396,7 +396,7 @@ function rt(){
     document.getElementById('featuredSection').style.display=(cc==='all'&&cs==='allS'&&cSearch===''&&cSort==='default')?'block':'none';
     // Update URL
     var url=new URL(window.location);if(cc!=='all')url.searchParams.set('cat',cc);else url.searchParams.delete('cat');window.history.replaceState({},'',url);
-    updateCompareBar();
+    updateCompareBar();equalizeCards();
 }
 
 document.getElementById('tagsContainer').addEventListener('click',function(e){if(e.target.classList.contains('tag-btn')){document.querySelectorAll('.tag-btn').forEach(function(b){b.classList.remove('active');});e.target.classList.add('active');cc=e.target.dataset.category;rt();}});
@@ -462,7 +462,9 @@ function tc(name){ak.clicks[name]=(ak.clicks[name]||0)+1;localStorage.setItem('a
 function ran(){var entries=[];for(var k in ak.clicks)entries.push({name:k,count:ak.clicks[k]});entries.sort(function(a,b){return b.count-a.count;});var top5=entries.slice(0,5);document.getElementById('hotList').innerHTML=top5.length===0?'<div class="hot-item" style="color:var(--text4)">还没有点击数据</div>':top5.map(function(e,i){var rc=i===0?'r1':i===1?'r2':i===2?'r3':'rn',tool=null;for(var j=0;j<tools.length;j++){if(tools[j].name===e.name){tool=tools[j];break;}}var cat=tool?tool.cat:'';return '<div class="hot-item"><span class="hot-rank '+rc+'">'+(i+1)+'</span><span class="hot-name">'+e.name+'</span><span class="hot-cat">'+cat+'</span><span class="hot-count">'+e.count+' 次点击</span></div>';}).join('');document.getElementById('analyticsStats').textContent='📈 总访问：'+ak.views+' 次 | 数据存于浏览器本地';}
 document.getElementById('toolsGrid').addEventListener('click',function(e){var btn=e.target.closest('.visit-btn');if(btn){var card=btn.closest('.tool-card');if(card){var ne=card.querySelector('.tool-name');if(ne)tc(ne.textContent);}}});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.getElementById('modalOverlay').classList.remove('show');document.getElementById('compareOverlay').classList.remove('show');document.getElementById('detailOverlay').classList.remove('show');}if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();document.getElementById('searchInput').focus();}});
+function equalizeCards(){var cards=document.querySelectorAll('.tool-card');if(!cards.length)return;cards.forEach(function(c){c.style.height='auto';});var rows={};cards.forEach(function(c){var r=c.getBoundingClientRect().top;if(!rows[r])rows[r]=[];rows[r].push(c);});Object.values(rows).forEach(function(row){if(row.length<2)return;row.forEach(function(c){c.style.height='auto';});var mh=Math.max.apply(null,row.map(function(c){return c.getBoundingClientRect().height;}));row.forEach(function(c){c.style.height=mh+'px';});});}
 window.addEventListener('scroll',function(){var b=document.getElementById('backToTop');if(window.scrollY>500)b.classList.add('show');else b.classList.remove('show');});
+var resizeTimer;window.addEventListener('resize',function(){clearTimeout(resizeTimer);resizeTimer=setTimeout(function(){var cs=document.querySelectorAll('.tool-card');cs.forEach(function(c){c.style.height='auto';});setTimeout(equalizeCards,50);},200);});
 ran();init();
 </script>
 </body>
