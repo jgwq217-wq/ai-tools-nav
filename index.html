@@ -69,8 +69,9 @@
         .changelog-item{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--text2)}
         .changelog-date{color:var(--text3);white-space:nowrap;min-width:70px}
         .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.3s;position:relative;cursor:pointer}
+        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.3s;position:relative;cursor:pointer;display:flex;flex-direction:column}
         .tool-card:hover{transform:translateY(-4px);border-color:var(--accent2);box-shadow:0 10px 30px rgba(0,0,0,.15)}
+        .tool-card .card-bottom{margin-top:auto;padding-top:12px}
         .new-badge{position:absolute;top:10px;right:10px;padding:3px 8px;background:var(--red);color:#fff;border-radius:8px;font-size:.65rem;font-weight:700;animation:pulse 2s infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
         .tool-compare{width:16px;height:16px;accent-color:#3b82f6;cursor:pointer;margin-right:8px;flex-shrink:0;opacity:.4;transition:opacity .2s;position:relative;z-index:1}
@@ -389,7 +390,7 @@ function rt(){
         var nBadge=isNew(t)?'<span class="new-badge">NEW</span>':'';
         var ckd=compared.indexOf(t.name)!==-1?' checked':'';
         var liked=favorites.indexOf(t.name)!==-1;
-        return '<div class="tool-card" onclick="showDetail(\''+t.name.replace(/'/g,"\\'")+'\')">'+nBadge+'<div class="tool-name-row"><input type="checkbox" class="tool-compare" value="'+t.name+'"'+ckd+' onclick="event.stopPropagation();tg(\''+t.name.replace(/'/g,"\\'")+'\')"><div class="tool-name">'+t.name+'</div></div><div class="tool-desc">'+t.desc+'</div><span class="tool-tag">'+t.cat+'</span>'+scTags+'<span class="tool-price '+pc+'">'+t.price+'</span><a href="'+t.url+'" class="visit-btn" target="_blank" rel="noopener" onclick="event.stopPropagation()">访问官网</a><button class="share-btn" onclick="event.stopPropagation();shareTool(\''+t.name.replace(/'/g,"\\'")+'\',\''+t.url+'\');">🔗 复制分享</button><button class="fav-btn'+(liked?' liked':'')+'" onclick="event.stopPropagation();toggleFav(\''+t.name.replace(/'/g,"\\'")+'\')">'+(liked?'❤️':'🤍')+'</button></div>';
+        return '<div class="tool-card" onclick="showDetail(\''+t.name.replace(/'/g,"\\'")+'\')">'+nBadge+'<div class="tool-name-row"><input type="checkbox" class="tool-compare" value="'+t.name+'"'+ckd+' onclick="event.stopPropagation();tg(\''+t.name.replace(/'/g,"\\'")+'\')"><div class="tool-name">'+t.name+'</div></div><div class="tool-desc">'+t.desc+'</div><span class="tool-tag">'+t.cat+'</span>'+scTags+'<span class="tool-price '+pc+'">'+t.price+'</span><div class="card-bottom"><a href="'+t.url+'" class="visit-btn" target="_blank" rel="noopener" onclick="event.stopPropagation()">访问官网</a><button class="share-btn" onclick="event.stopPropagation();shareTool(\''+t.name.replace(/'/g,"\\'")+'\',\''+t.url+'\');">🔗 复制分享</button><button class="fav-btn'+(liked?' liked':'')+'" onclick="event.stopPropagation();toggleFav(\''+t.name.replace(/'/g,"\\'")+'\')">'+(liked?'❤️':'🤍')+'</button></div></div>';
     }).join('');
     document.getElementById('featuredSection').style.display=(cc==='all'&&cs==='allS'&&cSearch===''&&cSort==='default')?'block':'none';
     // Update URL
